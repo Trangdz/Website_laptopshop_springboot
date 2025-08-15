@@ -1,0 +1,10 @@
+<settings>          <!-- File cấu hình Maven settings.xml -->
+  <mirrors>         <!-- Danh sách các mirror -->
+    <mirror>
+      <id>aliyun</id>                <!-- ID đặt tên cho mirror -->
+      <mirrorOf>central</mirrorOf>   <!-- Repository gốc cần mirror -->
+      <name>Aliyun Maven Mirror</name>  <!-- Tên hiển thị -->
+      <url>https://maven.aliyun.com/repository/central</url> <!-- URL mirror -->
+    </mirror>
+  </mirrors>
+</settings>
