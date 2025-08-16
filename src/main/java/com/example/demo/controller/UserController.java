@@ -6,18 +6,31 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.service.UserService;
+
+import jakarta.servlet.ServletContext;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.util.List;
+
+import javax.swing.Spring;
+
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.demo.domain.User;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
     // private final UserRepository userRepository;
+    private final ServletContext servletContext;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,ServletContext servletContext) {
+        this.servletContext = servletContext;
         // this.userRepository = userRepository;
         this.userService = userService;
     }
@@ -47,8 +60,28 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String createUser(Model model, @ModelAttribute("newUser") User user) {
+    public String createUser(Model model, @ModelAttribute("newUser") User user,
+            @RequestParam("hoidanitFile") MultipartFile file) {
         // Save user to database
+        byte[] bytes;
+        try{
+        bytes = file.getBytes();
+
+        String rootPath = this.servletContext.getRealPath("/resources/images");
+        File dir = new File(rootPath + File.separator + "avatar");
+        if (!dir.exists())
+            dir.mkdirs();
+        // Create the file on server
+        File serverFile = new File(dir.getAbsolutePath() + File.separator +
+                +System.currentTimeMillis() + "-" + file.getOriginalFilename());
+        BufferedOutputStream stream = new BufferedOutputStream(
+                new FileOutputStream(serverFile));
+        stream.write(bytes);
+        stream.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         this.userService.handleSaveUser(user);
         return "redirect:/admin/user";
     }

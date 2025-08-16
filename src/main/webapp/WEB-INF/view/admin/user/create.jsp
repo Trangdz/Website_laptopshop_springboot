@@ -107,7 +107,7 @@
                                                         <!-- Role -->
                                                         <div class="col-md-6 mb-3">
                                                             <label for="role" class="form-label">Role:</label>
-                                                            <form:select path="role" id="role" class="form-select">
+                                                            <form:select path="role.name" id="role" class="form-select">
                                                                 <form:option value="ADMIN">ADMIN</form:option>
                                                                 <form:option value="USER">USER</form:option>
 
@@ -118,7 +118,7 @@
                                                         <!-- Avatar -->
                                                         <div class="col-md-12 mb-3">
                                                             <label for="avatar" class="form-label">Avatar:</label>
-                                                            <input type="file" id="avatar" name="avatar"
+                                                            <input type="file" id="avatar" name="hoidanitFile"
                                                                 class="form-control" accept=".png,.jpg,.jpeg" />
 
                                                             <!-- Khung preview căn giữa -->
