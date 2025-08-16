@@ -40,6 +40,20 @@
         </div>
         <div class="card-body">
             <div class="d-flex mb-3">
+                <div class="detail-label">Avatar:</div>
+                <div class="detail-value">
+                    <c:if test="${not empty user.avatar}">
+                        <img src="/images/avatar/${user.avatar}" 
+                             alt="Avatar" 
+                             style="max-width:150px; max-height:150px; border-radius:10px; border:1px solid #ccc;">
+                    </c:if>
+                    <c:if test="${empty user.avatar}">
+                        <span class="text-muted">No avatar</span>
+                    </c:if>
+                </div>
+            </div>
+            
+            <div class="d-flex mb-3">
                 <div class="detail-label">ID:</div>
                 <div class="detail-value">${user.id}</div>
             </div>
@@ -51,10 +65,14 @@
                 <div class="detail-label">Email:</div>
                 <div class="detail-value">${user.email}</div>
             </div>
-            <!-- <div class="d-flex mb-3">
-                <div class="detail-label">Password:</div>
-                <div class="detail-value">${user.password}</div>
-            </div> -->
+            <div class="d-flex mb-3">
+                <div class="detail-label">Role:</div>
+                <div class="detail-value">
+                    <c:if test="${user.role.id == 1}">ADMIN</c:if>
+                    <c:if test="${user.role.id != 1}">USER</c:if>
+                </div>
+            </div>
+            
             <div class="d-flex mb-3">
                 <div class="detail-label">Address:</div>
                 <div class="detail-value">${user.address}</div>

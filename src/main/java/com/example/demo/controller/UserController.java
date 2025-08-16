@@ -106,12 +106,13 @@ public class UserController {
     @RequestMapping("/admin/user/update/{id}")
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User user = this.userService.getUserById(id);
-        model.addAttribute("user", user);
+        model.addAttribute("newUser", user);
         return "admin/user/update";
     }
 
     @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
-    public String updateUser(Model model, @ModelAttribute("user") User user) {
+    public String updateUser(Model model, @ModelAttribute("newUser") User user,
+                           @RequestParam("hoidanitFile") MultipartFile file) {
         // Get existing user from database to preserve password
         User existingUser = this.userService.getUserById(user.getId());
 
@@ -120,6 +121,21 @@ public class UserController {
         existingUser.setFullname(user.getFullname());
         existingUser.setAddress(user.getAddress());
         existingUser.setPhone(user.getPhone());
+        
+        // Handle file upload
+        if (!file.isEmpty()) {
+            String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+            existingUser.setAvatar(avatar);
+        }
+        
+        // Handle role update
+        if (user.getRole() != null && user.getRole().getName() != null) {
+            Role existingRole = this.roleService.findByName(user.getRole().getName());
+            if (existingRole != null) {
+                existingUser.setRole(existingRole);
+            }
+        }
+        
         // Keep existing password unchanged
 
         // Save updated user
