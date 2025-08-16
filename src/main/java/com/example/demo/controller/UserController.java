@@ -5,38 +5,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.example.demo.service.UserService;
-
-
-import jakarta.servlet.ServletContext;
-
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.util.List;
-
-import javax.swing.Spring;
-
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.example.demo.service.UploadService;
-import com.example.demo.domain.User;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import java.io.File;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.example.demo.service.UserService;
+import com.example.demo.service.RoleService;
+import com.example.demo.service.UploadService;
+import com.example.demo.domain.User;
+import com.example.demo.domain.Role;
+
+import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
     // private final UserRepository userRepository;
     private final UploadService uploadService;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService,
+    public UserController(UserService userService, RoleService roleService,
                           UploadService uploadService,
-                          BCryptPasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
         this.uploadService = uploadService;
         this.userService = userService;
     }
@@ -69,8 +64,28 @@ public class UserController {
     public String createUser(Model model, @ModelAttribute("newUser") User user,
             @RequestParam("hoidanitFile") MultipartFile file) {
         // Save user to database
-        String avatar=this.uploadService.handleSaveUploadFile(file,"avatar");
-        user.setAvatar(avatar);        
+        String avatar = this.uploadService.handleSaveUploadFile(file,"avatar");
+        user.setAvatar(avatar);
+        
+        // Hash password
+        String hashedPassword = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        
+        // Handle Role from form
+        if (user.getRole() != null && user.getRole().getName() != null) {
+            Role existingRole = this.roleService.findByName(user.getRole().getName());
+            if (existingRole != null) {
+                user.setRole(existingRole);
+            } else {
+                // Create new role if not exists
+                Role newRole = new Role();
+                newRole.setName(user.getRole().getName());
+                newRole.setDescription("Auto-created role");
+                Role savedRole = this.roleService.save(newRole);
+                user.setRole(savedRole);
+            }
+        }
+        
         this.userService.handleSaveUser(user);
         return "redirect:/admin/user";
     }

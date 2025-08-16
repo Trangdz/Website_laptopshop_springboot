@@ -14,7 +14,7 @@ public class RoleService {
     }
 
     public Role findByName(String name) {
-        return roleRepository.findByName(name);
+        return roleRepository.findFirstByName(name);
     }
 
     public Role save(Role role) {
@@ -22,11 +22,11 @@ public class RoleService {
     }
 
     public boolean existsByName(String name) {
-        return roleRepository.findByName(name) != null;
+        return roleRepository.findFirstByName(name) != null;
     }
 
     public Role getRoleByName(String name) {
-        return roleRepository.findByName(name);
+        return roleRepository.findFirstByName(name);
     }
 }
 
