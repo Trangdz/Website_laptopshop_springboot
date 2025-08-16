@@ -9,10 +9,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     // JpaRepository provides basic CRUD operations
     // You can add custom query methods here if needed
-    User save(User user); // Optional, as JpaRepository already has a save method
-
     List<User> findAllByEmail(String email); // Example of a custom query method
-    List<User> findAll();
-    User findById(long id); // Example of a custom query method
+    User findUserById(long id); // Custom method to avoid conflict
 }
 

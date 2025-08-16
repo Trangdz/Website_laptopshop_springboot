@@ -23,9 +23,9 @@ public class User {
     private String phone;
     private String avatar;
 
-    //Users many -> to one -> role
+    // Users many -> to one -> role
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = true)
     private Role role;
 
     @OneToMany(mappedBy = "user")
@@ -80,22 +80,22 @@ public class User {
     }
 
     public Role getRole() {
-		return role;
-	}
+        return role;
+    }
 
-	// public void setRole(Role role) {
-	// 	this.role = role;
-	// }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	// public List<Order> getOrders() {
-	// 	return orders;
-	// }
+    public List<Order> getOrders() {
+        return orders;
+    }
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +

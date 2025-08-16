@@ -30,7 +30,7 @@ public class UserService {
 
     public User getUserById(long id) {
         // Retrieve user by ID
-        return userRepository.findById(id);
+        return userRepository.findById(id).orElse(null);
     }
     // public String handleHello() {
     // return "Hello from UserService!";
