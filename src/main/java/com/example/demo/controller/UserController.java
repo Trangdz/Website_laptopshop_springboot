@@ -30,14 +30,14 @@ public class UserController {
         return "hello";
     }
 
-    @RequestMapping("admin/user")
+    @RequestMapping("/admin/user")
     public String getUserPage(Model model) {
         // String test = this.userService.handleHello();
         // model.addAttribute("eric", test);
         // model.addAttribute("newUser", new User());
         List<User> users = this.userService.getAllUsers();
         model.addAttribute("users", users);
-        return "admin/user/table-user";
+        return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/create")
@@ -57,16 +57,16 @@ public class UserController {
     public String getUserDetailPage(Model model, @PathVariable long id) {
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
-        return "admin/user/show";
+        return "admin/user/detail";
     }
 
     @RequestMapping("/admin/user/show/")
     public String abc(Model model) {
         model.addAttribute("newUser", new User());
-        return "admin/user/show";
+        return "admin/user/detail";
     }
 
-    @RequestMapping("/admin/update/{id}")
+    @RequestMapping("/admin/user/update/{id}")
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
@@ -77,14 +77,14 @@ public class UserController {
     public String updateUser(Model model, @ModelAttribute("user") User user) {
         // Get existing user from database to preserve password
         User existingUser = this.userService.getUserById(user.getId());
-        
+
         // Update only non-password fields
         existingUser.setEmail(user.getEmail());
         existingUser.setFullname(user.getFullname());
         existingUser.setAddress(user.getAddress());
         existingUser.setPhone(user.getPhone());
         // Keep existing password unchanged
-        
+
         // Save updated user
         this.userService.handleSaveUser(existingUser);
         return "redirect:/admin/user";
