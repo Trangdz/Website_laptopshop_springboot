@@ -77,9 +77,9 @@
                                                             
                                                             <label for="email" class="form-label">Email:</label>
                                                             <form:input path="email" id="email" type="text"
-                                                                class="form-control ${not empty errorPassword ? 'is-invalid':''}"
-                                                                path="password" />
-                                                                ${errorPassword}
+                                                                class="form-control ${not empty errorEmail ? 'is-invalid':''}"
+                                                                placeholder="Enter your email"/>
+                                                                ${errorEmail}
                                                            
                                                         </div>
 
@@ -87,8 +87,10 @@
                                                         <div class="col-md-6 mb-3">
                                                             <label for="password" class="form-label">Password:</label>
                                                             <form:password path="password" id="password"
-                                                                class="form-control" placeholder="Enter your password" />
-                                                            <form:errors path="password" cssClass="text-danger small" />
+                                                                class="form-control ${not empty errorPassword?'is-invalid':''}" 
+                                                                placeholder="Enter your password" />
+                                                                ${errorEmail}
+                                                            
                                                         </div>
                                                     </div>
 
@@ -97,17 +99,18 @@
                                                         <div class="col-md-6 mb-3">
                                                             <label for="phone" class="form-label">Phone number:</label>
                                                             <form:input path="phone" id="phone" type="text"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorPhone ? 'is-invalid':''}"
                                                                 placeholder="Enter your phone number" />
+                                                                ${errorPhone}
                                                         </div>
 
                                                         <!-- Full Name -->
                                                         <div class="col-md-6 mb-3">
                                                             <label for="fullname" class="form-label">Full Name:</label>
                                                             <form:input path="fullname" id="fullname" type="text"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorFullname ? 'is-invalid':''}"
                                                                 placeholder="Enter your full name" />
-                                                            <form:errors path="fullname" cssClass="text-danger small" />
+                                                                ${errorFullname}
                                                         </div>
                                                     </div>
 

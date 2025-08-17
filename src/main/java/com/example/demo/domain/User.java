@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -32,8 +34,9 @@ public class User {
     private String fullname;
 
     private String address;
-    @NotBlank(message = "Phone number is required") 
-    @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^\\d{10,15}$", message = "Phone number must contain only digits and be 10–15 characters long")
+    @Column(length = 15)
     private String phone;
     private String avatar;
 
