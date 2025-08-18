@@ -73,22 +73,30 @@
                                                     <!-- Hidden field for user ID -->
                                                     <form:hidden path="id"/>
 
+                                                    <!-- Collect errors -->
+                                                    <c:set var="errorFullname">
+                                                        <form:errors path="fullname" cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <c:set var="errorPhone">
+                                                        <form:errors path="phone" cssClass="invalid-feedback" />
+                                                    </c:set>
+
                                                     <div class="row">
-                                                        <!-- Email -->
+                                                        <!-- Email (Display Only) -->
                                                         <div class="col-md-6 mb-3">
                                                             <label for="email" class="form-label">Email:</label>
-                                                            <form:input path="email" id="email" type="email"
-                                                                class="form-control" placeholder="Enter your email"
-                                                                required="true" disabled="true"/>
+                                                            <input type="text" id="email" class="form-control" 
+                                                                value="${newUser.email}" readonly style="background-color: #f8f9fa;"/>
+                                                            <small class="text-muted">Email cannot be changed</small>
                                                         </div>
 
-                                                        <!-- Password -->
-                                                        <!-- <div class="col-md-6 mb-3">
+                                                        <!-- Password (Not Updated) -->
+                                                        <div class="col-md-6 mb-3">
                                                             <label for="password" class="form-label">Password:</label>
-                                                            <form:password path="password" id="password"
-                                                                class="form-control" placeholder="Enter your password"
-                                                                required="true" disabled="true"/>
-                                                        </div> -->
+                                                            <input type="password" id="password" class="form-control" 
+                                                                value="********" readonly style="background-color: #f8f9fa;" disabled="true"/>
+                                                            <small class="text-muted">Password cannot be changed here</small>
+                                                        </div>
                                                     </div>
 
                                                     <div class="row">
@@ -96,16 +104,18 @@
                                                         <div class="col-md-6 mb-3">
                                                             <label for="phone" class="form-label">Phone number:</label>
                                                             <form:input path="phone" id="phone" type="text"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorPhone ? 'is-invalid':''}"
                                                                 placeholder="Enter your phone number" />
+                                                            ${errorPhone}
                                                         </div>
 
                                                         <!-- Full Name -->
                                                         <div class="col-md-6 mb-3">
                                                             <label for="fullname" class="form-label">Full Name:</label>
                                                             <form:input path="fullname" id="fullname" type="text"
-                                                                class="form-control"
+                                                                class="form-control ${not empty errorFullname ? 'is-invalid':''}"
                                                                 placeholder="Enter your full name" />
+                                                            ${errorFullname}
                                                         </div>
                                                     </div>
 

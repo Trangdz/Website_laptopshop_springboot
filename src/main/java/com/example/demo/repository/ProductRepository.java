@@ -19,4 +19,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // KHÔNG cần khai báo findById - đã có sẵn trong JpaRepository:
     // Optional<Product> findById(Long id);
+    Product findProductById(long id); // Custom method to avoid conflict
 }
