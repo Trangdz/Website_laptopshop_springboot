@@ -80,7 +80,7 @@
         </div>
         <div class="card-footer d-flex justify-content-end gap-2">
             <a href="/admin/user" class="btn btn-secondary">Back</a>
-            <a href="/admin/update/${user.id}" class="btn btn-warning">Update</a>
+            <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>
             <a href="/admin/user/delete/${user.id}" class="btn btn-danger"
                onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
         </div>

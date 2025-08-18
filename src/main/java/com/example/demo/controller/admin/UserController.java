@@ -137,12 +137,40 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
     public String updateUser(Model model, @ModelAttribute("newUser") User user,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+            BindingResult bindingResult, @RequestParam("hoidanitFile") MultipartFile file) {
+        
+        // Debug logging
+        System.out.println("=== UPDATE USER DEBUG ===");
+        System.out.println("User ID: " + user.getId());
+        System.out.println("User Fullname: " + user.getFullname());
+        System.out.println("User Phone: " + user.getPhone());
+        System.out.println("User Address: " + user.getAddress());
+        System.out.println("File empty: " + file.isEmpty());
+        
+        // Manual validation for update (excluding password and email)
+        if (user.getFullname() == null || user.getFullname().trim().length() < 3) {
+            bindingResult.rejectValue("fullname", "error.fullname", "Fullname must be at least 3 characters");
+        }
+        
+        if (user.getPhone() == null || !user.getPhone().matches("^\\d{10,15}$")) {
+            bindingResult.rejectValue("phone", "error.phone", "Phone number must contain only digits and be 10–15 characters long");
+        }
+        
+        // Check for validation errors
+        if (bindingResult.hasErrors()) {
+            // Return to update form with errors
+            return "admin/user/update";
+        }
+        
         // Get existing user from database to preserve password
         User existingUser = this.userService.getUserById(user.getId());
+        
+        if (existingUser == null) {
+            // User not found, redirect back to user list
+            return "redirect:/admin/user";
+        }
 
-        // Update only non-password fields
-        existingUser.setEmail(user.getEmail());
+        // Update only allowed fields (excluding email and password)
         existingUser.setFullname(user.getFullname());
         existingUser.setAddress(user.getAddress());
         existingUser.setPhone(user.getPhone());
