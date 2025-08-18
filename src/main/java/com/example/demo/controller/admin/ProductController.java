@@ -104,5 +104,24 @@ public class ProductController {
         this.productService.handleSaveProduct(existingProduct);
         return "redirect:/admin/product";
     }
+    @PostMapping("/admin/product/delete/{id}")
+    public String deleteProduct(Model model, @PathVariable long id) {
+        this.productService.delProductById(id);
+        //TODO: process POST request
+        
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/detail/{id}")
+    public String getProductDetail(Model model, @PathVariable long id) {
+        Product product = this.productService.getProductById(id);
+        if (product == null) {
+            return "redirect:/admin/product";
+        }
+        model.addAttribute("product", product);
+        return "/admin/product/detail";
+    }
+    
+   
 
 }

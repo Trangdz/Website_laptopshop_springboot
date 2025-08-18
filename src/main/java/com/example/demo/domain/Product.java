@@ -23,7 +23,9 @@ public class Product {
     @Size(min = 3, max = 100, message = "Product name must be between 3 and 100 characters")
     private String name;
 
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
+    // @DecimalMin(value = "0.0", inclusive = false, message = "Price must be
+    // greater than 0")
+    @Positive(message = "Price must be greater than 0")
     private double price;
 
     private String image;

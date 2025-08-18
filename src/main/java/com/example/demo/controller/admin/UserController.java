@@ -74,9 +74,12 @@ public class UserController {
 
         // Debug: Always print this to see if method is called
         System.out.println("POST method called! Has errors: " + newUserbindingResult.hasErrors());
-        System.out.println("Email: [" + user.getEmail() + "] - Length: " + (user.getEmail() != null ? user.getEmail().length() : "NULL"));
-        System.out.println("Password: [" + user.getPassword() + "] - Length: " + (user.getPassword() != null ? user.getPassword().length() : "NULL"));
-        System.out.println("Fullname: [" + user.getFullname() + "] - Length: " + (user.getFullname() != null ? user.getFullname().length() : "NULL"));
+        System.out.println("Email: [" + user.getEmail() + "] - Length: "
+                + (user.getEmail() != null ? user.getEmail().length() : "NULL"));
+        System.out.println("Password: [" + user.getPassword() + "] - Length: "
+                + (user.getPassword() != null ? user.getPassword().length() : "NULL"));
+        System.out.println("Fullname: [" + user.getFullname() + "] - Length: "
+                + (user.getFullname() != null ? user.getFullname().length() : "NULL"));
 
         // Validate user input
         List<FieldError> errors = newUserbindingResult.getFieldErrors();
@@ -138,7 +141,7 @@ public class UserController {
     @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
     public String updateUser(Model model, @ModelAttribute("newUser") User user,
             BindingResult bindingResult, @RequestParam("hoidanitFile") MultipartFile file) {
-        
+
         // Debug logging
         System.out.println("=== UPDATE USER DEBUG ===");
         System.out.println("User ID: " + user.getId());
@@ -146,25 +149,26 @@ public class UserController {
         System.out.println("User Phone: " + user.getPhone());
         System.out.println("User Address: " + user.getAddress());
         System.out.println("File empty: " + file.isEmpty());
-        
+
         // Manual validation for update (excluding password and email)
         if (user.getFullname() == null || user.getFullname().trim().length() < 3) {
             bindingResult.rejectValue("fullname", "error.fullname", "Fullname must be at least 3 characters");
         }
-        
+
         if (user.getPhone() == null || !user.getPhone().matches("^\\d{10,15}$")) {
-            bindingResult.rejectValue("phone", "error.phone", "Phone number must contain only digits and be 10–15 characters long");
+            bindingResult.rejectValue("phone", "error.phone",
+                    "Phone number must contain only digits and be 10–15 characters long");
         }
-        
+
         // Check for validation errors
         if (bindingResult.hasErrors()) {
             // Return to update form with errors
             return "admin/user/update";
         }
-        
+
         // Get existing user from database to preserve password
         User existingUser = this.userService.getUserById(user.getId());
-        
+
         if (existingUser == null) {
             // User not found, redirect back to user list
             return "redirect:/admin/user";
@@ -198,7 +202,7 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user/delete/{id}", method = RequestMethod.POST)
     public String deleteUser(@PathVariable long id) {
-        this.userService.delleteUserById(id);
+        this.userService.deleteUserById(id);
         return "redirect:/admin/user";
     }
 
